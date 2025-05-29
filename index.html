@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JingLun AI - 经纶通识</title>
+  <style>
+    :root {
+      --primary-color: #722F37;
+      --secondary-color: #A4373A;
+      --light-color: #F5F1E6;
+      --dark-color: #333333;
+      --border-color: #D9C8A9;
+      --highlight-color: #DAA520;
+      --text-color: #333333;
+      --light-text: #F5F1E6;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Microsoft YaHei", "SimSun", "STKaiti", sans-serif;
+    }
+    
+    body {
+      background-color: var(--light-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* 导航栏样式 */
+    .navbar {
+      background-color: var(--primary-color);
+      color: var(--light-text);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-img {
+      width: 40px;
+      height: 40px;
+      background-color: var(--light-text);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--primary-color);
+      font-size: 20px;
+    }
+    
+    .logo-text {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    
+    .user-settings {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--light-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    
+    .setting-icon {
+      cursor: pointer;
+    }
+    
+    /* 主内容区样式 */
+    .main-container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 60px);
+    }
+    
+    /* 左侧内容区 - 70% */
+    .content-area {
+      width: 70%;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+    }
+    
+    /* 右侧聊天区 - 30% */
+    .chat-area {
+      width: 30%;
+      background-color: white;
+      border-left: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 60px);
+      position: sticky;
+      top: 60px;
+    }
+    
+    /* 输入区样式 */
+    .input-section {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .input-tabs {
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    
+    .tab {
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px 4px 0 0;
+      font-weight: bold;
+      color: var(--text-color);
+      background-color: transparent;
+      border: none;
+      outline: none;
+    }
+    
+    .tab.active {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+    }
+    
+    textarea {
+      width: 100%;
+      height: 120px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 10px;
+      font-size: 16px;
+      resize: none;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    
+    textarea:focus {
+      border-color: var(--primary-color);
+    }
+    
+    .input-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .file-upload {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .upload-btn {
+      background-color: transparent;
+      border: none;
+      color: var(--text-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .submit-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .submit-btn:hover {
+      background-color: var(--secondary-color);
+    }
+    
+    .submit-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    /* 原文展示区样式 */
+    .original-text-section {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .section-title {
+      font-size: 1.2em;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .section-icon {
+      font-size: 20px;
+    }
+    
+    .text-paragraphs {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .paragraph {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 15px;
+      background-color: rgba(245, 241, 230, 0.3);
+    }
+    
+    .original {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      font-family: "STKaiti", "KaiTi", serif;
+    }
+    
+    .translation {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #555;
+      margin-bottom: 15px;
+      border-top: 1px dashed var(--border-color);
+      padding-top: 15px;
+    }
+    
+    .notes {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #666;
+      background-color: rgba(218, 165, 32, 0.1);
+      padding: 10px;
+      border-radius: 4px;
+      border-left: 3px solid var(--highlight-color);
+    }
+    
+    /* 深度解析区样式 */
+    .analysis-section {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    
+    .analysis-tab {
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      background-color: #f5f5f5;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+    
+    .analysis-tab.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .analysis-content {
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    
+    /* 现代应用区样式 */
+    .modern-application {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .application-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .application-tab {
+      background-color: transparent;
+      border: none;
+      padding: 5px 0;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--text-color);
+      position: relative;
+    }
+    
+    .application-tab.active {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    
+    .application-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--primary-color);
+    }
+    
+    .application-content {
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    
+    /* 聊天区样式 */
+    .chat-header {
+      padding: 15px;
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-height: calc(100% - 120px);
+    }
+    
+    .message {
+      max-width: 85%;
+      padding: 10px 15px;
+      border-radius: 18px;
+      line-height: 1.4;
+      font-size: 15px;
+      position: relative;
+    }
+    
+    .user-message {
+      background-color: #e2f4ff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .ai-message {
+      background-color: #f1f1f1;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    
+    /* 聊天输入区样式 */
+    .chat-input {
+      padding: 15px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 10px;
+      background-color: white;
+      position: sticky;
+      bottom: 0;
+    }
+    
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      outline: none;
+      font-size: 15px;
+    }
+    
+    .send-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    
+    .send-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* API配置弹窗 */
+    .api-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .api-modal.show {
+      display: flex;
+    }
+    
+    .api-modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 400px;
+      max-width: 90%;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .api-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .api-form label {
+      font-weight: bold;
+    }
+    
+    .api-form input {
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+    }
+    
+    .api-form button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* 加载状态 */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* 响应式调整 */
+    @media (max-width: 1200px) {
+      .main-container {
+        flex-direction: column;
+      }
+      
+      .content-area, .chat-area {
+        width: 100%;
+        height: auto;
+      }
+      
+      .content-area {
+        height: auto;
+        max-height: none;
+      }
+      
+      .chat-area {
+        height: 400px;
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+        position: relative;
+        top: 0;
+      }
+      
+      .chat-messages {
+        max-height: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- API配置弹窗 -->
+  <div id="apiModal" class="api-modal">
+    <div class="api-modal-content">
+      <div class="modal-header">
+        <h3>API配置</h3>
+        <button class="close-btn" onclick="closeApiModal()">&times;</button>
+      </div>
+      <form class="api-form" onsubmit="saveApiConfig(event)">
+        <label for="apiKey">DeepSeek API Key:</label>
+        <input type="password" id="apiKey" placeholder="请输入您的DeepSeek API Key" required>
+        <label for="apiUrl">API地址:</label>
+        <input type="url" id="apiUrl" value="https://api.deepseek.com/v1/chat/completions" required>
+        <button type="submit">保存配置</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 导航栏 -->
+  <div class="navbar">
+    <div class="logo">
+      <div class="logo-img">经</div>
+      <div class="logo-text">JingLun AI（经纶通识）</div>
+    </div>
+    <div class="user-settings">
+      <div class="setting-icon" onclick="openApiModal()">⚙️</div>
+      <div class="user-avatar">游</div>
+    </div>
+  </div>
+  
+  <!-- 主内容区 -->
+  <div class="main-container">
+    <!-- 左侧内容区 - 70% -->
+    <div class="content-area">
+      <!-- 输入区 -->
+      <div class="input-section">
+        <div class="input-container">
+          <div class="input-tabs">
+            <button class="tab active">文本输入</button>
+            <button class="tab">OCR上传</button>
+          </div>
+          <textarea id="textInput" placeholder="请输入古文文本，或粘贴需要校对/解析的内容..."></textarea>
+          <div class="input-actions">
+            <div class="file-upload">
+              <button class="upload-btn">
+                <span>📄</span> 上传文件
+              </button>
+              <button class="upload-btn">
+                <span>📸</span> 上传图片
+              </button>
+            </div>
+            <button class="submit-btn" id="submitBtn" onclick="analyzeText()">开始解析</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 原文展示区 -->
+      <div class="original-text-section" id="originalSection" style="display: none;">
+        <div class="section-title">
+          <span class="section-icon">📜</span> 原文校对与翻译
+        </div>
+        <div class="text-paragraphs" id="textParagraphs">
+          <!-- 动态生成内容 -->
+        </div>
+      </div>
+      
+      <!-- 深度解析区 -->
+      <div class="analysis-section" id="analysisSection" style="display: none;">
+        <div class="section-title">
+          <span class="section-icon">🔍</span> 深度解析
+        </div>
+        <div class="tabs">
+          <button class="analysis-tab active" data-tab="思想内涵">思想内涵</button>
+          <button class="analysis-tab" data-tab="文化背景">文化背景</button>
+          <button class="analysis-tab" data-tab="典故关联">典故关联</button>
+          <button class="analysis-tab" data-tab="版本对比">版本对比</button>
+        </div>
+        <div class="analysis-content" id="analysisContent">
+          <!-- 动态生成内容 -->
+        </div>
+      </div>
+      
+      <!-- 现代应用区 -->
+      <div class="modern-application" id="applicationSection" style="display: none;">
+        <div class="section-title">
+          <span class="section-icon">🔄</span> 现代应用
+        </div>
+        <div class="application-tabs">
+          <button class="application-tab active" data-tab="现实案例">现实案例</button>
+          <button class="application-tab" data-tab="启示借鉴">启示借鉴</button>
+        </div>
+        <div class="application-content" id="applicationContent">
+          <!-- 动态生成内容 -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- 右侧聊天区 - 30% -->
+    <div class="chat-area">
+      <div class="chat-header">
+        经纶通识助手
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="message ai-message">
+          欢迎使用经纶通识AI助手！我可以帮您解析古文、出处考证、文化阐释等。您可以在左侧输入文本，或直接在这里向我提问。<br><br>
+          <strong>使用提示：</strong><br>
+          1. 点击右上角⚙️配置DeepSeek API<br>
+          2. 在左侧输入古文进行全面解析<br>
+          3. 或在此处直接提问交流
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="输入您的问题...">
+        <button class="send-btn" id="sendBtn" onclick="sendChatMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 全局变量
+    let apiConfig = {
+      apiKey: '',
+      apiUrl: 'https://api.deepseek.com/v1/chat/completions'
+    };
+    
+    let analysisData = {};
+    let applicationData = {};
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      loadApiConfig();
+      setupEventListeners();
+    });
+
+    // 设置事件监听器
+    function setupEventListeners() {
+      // 输入标签切换
+      const inputTabs = document.querySelectorAll('.input-tabs .tab');
+      inputTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          inputTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+        });
+      });
+      
+      // 解析标签切换
+      const analysisTabs = document.querySelectorAll('.analysis-tab');
+      analysisTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          analysisTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          showAnalysisContent(tab.dataset.tab);
+        });
+      });
+      
+      // 应用标签切换
+      const applicationTabs = document.querySelectorAll('.application-tab');
+      applicationTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          applicationTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          showApplicationContent(tab.dataset.tab);
+        });
+      });
+      
+      // 聊天输入回车发送
+      document.getElementById('chatInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendChatMessage();
+          e.preventDefault();
+        }
+      });
+    }
+
+    // API配置相关函数
+    function openApiModal() {
+      document.getElementById('apiModal').classList.add('show');
+      if (apiConfig.apiKey) {
+        document.getElementById('apiKey').value = apiConfig.apiKey;
+      }
+      document.getElementById('apiUrl').value = apiConfig.apiUrl;
+    }
+
+    function closeApiModal() {
+      document.getElementById('apiModal').classList.remove('show');
+    }
+
+    function saveApiConfig(event) {
+      event.preventDefault();
+      apiConfig.apiKey = document.getElementById('apiKey').value;
+      apiConfig.apiUrl = document.getElementById('apiUrl').value;
+      
+      // 保存到本地存储
+      const configData = {
+        apiKey: apiConfig.apiKey,
+        apiUrl: apiConfig.apiUrl
+      };
+      
+      closeApiModal();
+      alert('API配置已保存！');
+    }
+
+    function loadApiConfig() {
+      // 在实际应用中可以从localStorage加载
+      // 这里为了演示目的，使用默认配置
+    }
+
+    // DeepSeek API调用函数 - 支持流式输出
+    async function callDeepSeekAPI(messages, systemPrompt = '', streaming = false, onChunk = null) {
+      if (!apiConfig.apiKey) {
+        throw new Error('请先配置DeepSeek API Key');
+      }
+
+      const requestBody = {
+        model: "deepseek-chat",
+        messages: [
+          ...(systemPrompt ? [{ role: "system", content: systemPrompt }] : []),
+          ...messages
+        ],
+        temperature: 0.7,
+        max_tokens: 4000,
+        stream: streaming
+      };
+
+      try {
+        const response = await fetch(apiConfig.apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiConfig.apiKey}`
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+          throw new Error(`API请求失败: ${response.status} ${response.statusText}`);
+        }
+
+        if (streaming) {
+          return await handleStreamingResponse(response, onChunk);
+        } else {
+          const data = await response.json();
+          return data.choices[0].message.content;
+        }
+      } catch (error) {
+        console.error('API调用错误:', error);
+        throw error;
+      }
+    }
+
+    // 处理流式响应
+    async function handleStreamingResponse(response, onChunk) {
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullContent = '';
+
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value);
+          const lines = chunk.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6).trim();
+              if (data === '[DONE]') {
+                return fullContent;
+              }
+
+              try {
+                const parsed = JSON.parse(data);
+                const content = parsed.choices?.[0]?.delta?.content;
+                if (content) {
+                  fullContent += content;
+                  if (onChunk) {
+                    onChunk(content);
+                  }
+                }
+              } catch (e) {
+                // 忽略JSON解析错误，继续处理下一行
+              }
+            }
+          }
+        }
+      } finally {
+        reader.releaseLock();
+      }
+
+      return fullContent;
+    }
+
+    // 聊天功能 - 支持流式输出
+    async function sendChatMessage() {
+      const chatInput = document.getElementById('chatInput');
+      const message = chatInput.value.trim();
+      
+      if (!message) return;
+
+      if (!apiConfig.apiKey) {
+        alert('请先配置DeepSeek API Key');
+        openApiModal();
+        return;
+      }
+
+      // 添加用户消息
+      addChatMessage(message, 'user');
+      chatInput.value = '';
+
+      // 禁用发送按钮
+      const sendBtn = document.getElementById('sendBtn');
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = '<div class="loading"></div>';
+
+      // 创建AI消息容器
+      const aiMessageDiv = createAIMessage();
+
+      try {
+        const systemPrompt = `你是一位资深的古文研究专家和文化学者，专门研究中国古典文学、哲学和文化。请用专业而通俗易懂的方式回答用户关于古文、古典文化、历史典故等方面的问题。回答要准确、详细，并尽可能结合现代生活进行阐释。`;
+
+        // 获取最近几条聊天记录作为上下文
+        const chatMessages = getChatHistory();
+        
+        // 流式输出回调函数
+        const onChunk = (content) => {
+          aiMessageDiv.innerHTML += content.replace(/\n/g, '<br>');
+          // 自动滚动到底部
+          const chatMessagesContainer = document.getElementById('chatMessages');
+          chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+        };
+
+        await callDeepSeekAPI([
+          ...chatMessages,
+          { role: "user", content: message }
+        ], systemPrompt, true, onChunk);
+
+      } catch (error) {
+        console.error('聊天错误:', error);
+        aiMessageDiv.innerHTML = `抱歉，发生了错误：${error.message}`;
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = '➤';
+      }
+    }
+
+    // 创建AI消息容器
+    function createAIMessage() {
+      const chatMessages = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message ai-message';
+      messageDiv.innerHTML = ''; // 开始时为空
+      
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      return messageDiv;
+    }
+    // 文本解析函数
+    async function analyzeText() {
+      const textInput = document.getElementById('textInput').value.trim();
+      if (!textInput) {
+        alert('请输入要解析的古文文本');
+        return;
+      }
+
+      if (!apiConfig.apiKey) {
+        alert('请先配置DeepSeek API Key');
+        openApiModal();
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<div class="loading"></div> 解析中...';
+
+      try {
+        const systemPrompt = `你是一位资深的古文研究专家，请按照以下JSON格式对古文进行详细解析：
+注意：所输入古文可能存在错别字，故你应该先在已知古诗文中寻找与所输入古文相似度最高的原文，并写在下面的原始文本处，后续内容都基于原始文本进行解析。
+{
+  "原文校对": {
+    "段落": [
+      {
+        "原文": "原始文本",
+        "翻译": "现代汉语翻译", 
+        "校对说明": "字词校对、通假字说明等"
+      }
+    ]
+  },
+  "深度解析": {
+    "思想内涵": "详细阐述文本的思想内容和哲学意蕴",
+    "文化背景": "介绍文本的历史文化背景和时代特色",
+    "典故关联": "相关典故、引用来源和文献关联",
+    "版本对比": "不同版本的差异和校勘说明"
+  },
+  "现代应用": {
+    "现实案例": "结合现代社会的具体应用案例",
+    "启示借鉴": "对现代人的启发和借鉴意义"
+  }
+}
+
+请确保回复严格按照上述JSON格式，内容要详实准确，体现专业水准。`;
+
+        const response = await callDeepSeekAPI([
+          { role: "user", content: `请解析以下古文：\n\n${textInput}` }
+        ], systemPrompt);
+
+        // 解析JSON响应
+        let parsedData;
+        try {
+          // 提取JSON部分（如果响应包含其他文本）
+          const jsonMatch = response.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            parsedData = JSON.parse(jsonMatch[0]);
+          } else {
+            throw new Error('无法解析API响应为JSON格式');
+          }
+        } catch (parseError) {
+          console.error('JSON解析错误:', parseError);
+          // 如果JSON解析失败，显示原始响应
+          showSimpleAnalysis(response);
+          return;
+        }
+
+        // 渲染解析结果
+        renderAnalysisResults(parsedData);
+
+      } catch (error) {
+        console.error('解析错误:', error);
+        alert(`解析失败: ${error.message}`);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '开始解析';
+      }
+    }
+
+    // 渲染解析结果
+    function renderAnalysisResults(data) {
+      // 渲染原文校对与翻译
+      if (data.原文校对 && data.原文校对.段落) {
+        renderOriginalText(data.原文校对.段落);
+      }
+
+      // 保存深度解析数据
+      if (data.深度解析) {
+        analysisData = data.深度解析;
+        renderAnalysisSection();
+      }
+
+      // 保存现代应用数据
+      if (data.现代应用) {
+        applicationData = data.现代应用;
+        renderApplicationSection();
+      }
+
+      // 显示所有区域
+      document.getElementById('originalSection').style.display = 'block';
+      document.getElementById('analysisSection').style.display = 'block';
+      document.getElementById('applicationSection').style.display = 'block';
+    }
+
+    // 渲染原文区域
+    function renderOriginalText(paragraphs) {
+      const container = document.getElementById('textParagraphs');
+      container.innerHTML = '';
+
+      paragraphs.forEach(para => {
+        const paragraphDiv = document.createElement('div');
+        paragraphDiv.className = 'paragraph';
+        
+        paragraphDiv.innerHTML = `
+          <div class="original">${para.原文 || ''}</div>
+          <div class="translation">${para.翻译 || ''}</div>
+          <div class="notes">【校对说明】${para.校对说明 || '暂无校对说明'}</div>
+        `;
+        
+        container.appendChild(paragraphDiv);
+      });
+    }
+
+    // 渲染深度解析区域
+    function renderAnalysisSection() {
+      showAnalysisContent('思想内涵');
+    }
+
+    function showAnalysisContent(tabName) {
+      const content = analysisData[tabName] || '暂无相关内容';
+      const contentElement = document.getElementById('analysisContent');
+      contentElement.innerHTML = `<p>${content.replace(/\n/g, '</p><p>')}</p>`;
+    }
+
+    // 渲染现代应用区域
+    function renderApplicationSection() {
+      showApplicationContent('现实案例');
+    }
+
+    function showApplicationContent(tabName) {
+      const content = applicationData[tabName] || '暂无相关内容';
+      const contentElement = document.getElementById('applicationContent');
+      contentElement.innerHTML = `<p>${content.replace(/\n/g, '</p><p>')}</p>`;
+    }
+
+    // 简单解析显示（当JSON解析失败时）
+    function showSimpleAnalysis(response) {
+      // 显示原文区域（使用输入的文本）
+      const textInput = document.getElementById('textInput').value.trim();
+      document.getElementById('textParagraphs').innerHTML = `
+        <div class="paragraph">
+          <div class="original">${textInput}</div>
+          <div class="translation">AI正在解析中，请稍候...</div>
+          <div class="notes">【说明】API响应格式异常，显示原始回复</div>
+        </div>
+      `;
+
+      // 显示解析内容
+      analysisData = {
+        '思想内涵': response,
+        '文化背景': '请在聊天区域询问更多详细信息',
+        '典故关联': '请在聊天区域询问更多详细信息',
+        '版本对比': '请在聊天区域询问更多详细信息'
+      };
+
+      applicationData = {
+        '现实案例': '请在聊天区域询问现代应用案例',
+        '启示借鉴': '请在聊天区域询问启示借鉴'
+      };
+
+      renderAnalysisSection();
+      renderApplicationSection();
+
+      // 显示所有区域
+      document.getElementById('originalSection').style.display = 'block';
+      document.getElementById('analysisSection').style.display = 'block';
+      document.getElementById('applicationSection').style.display = 'block';
+    }
+
+    // 添加聊天消息
+    function addChatMessage(message, type) {
+      const chatMessages = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type === 'user' ? 'user-message' : 'ai-message'}`;
+      messageDiv.innerHTML = message.replace(/\n/g, '<br>');
+      
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // 获取聊天历史（最近5条消息）
+    function getChatHistory() {
+      const messages = document.querySelectorAll('.message');
+      const history = [];
+      
+      // 从最后5条消息开始获取（排除欢迎消息）
+      const recentMessages = Array.from(messages).slice(-10).slice(1);
+      
+      recentMessages.forEach(msg => {
+        if (msg.classList.contains('user-message')) {
+          history.push({
+            role: 'user',
+            content: msg.textContent
+          });
+        } else if (msg.classList.contains('ai-message')) {
+          history.push({
+            role: 'assistant',
+            content: msg.textContent
+          });
+        }
+      });
+      
+      return history;
+    }
+
+    // 示例功能：快速体验
+    function loadExample() {
+      const exampleText = "子曰：\"学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？\"";
+      document.getElementById('textInput').value = exampleText;
+    }
+
+    // 添加示例按钮功能
+    document.addEventListener('DOMContentLoaded', function() {
+      // 在输入区域添加示例按钮
+      const inputActions = document.querySelector('.input-actions .file-upload');
+      const exampleBtn = document.createElement('button');
+      exampleBtn.className = 'upload-btn';
+      exampleBtn.innerHTML = '<span>📝</span> 加载示例';
+      exampleBtn.onclick = loadExample;
+      inputActions.appendChild(exampleBtn);
+    });
+
+    // 错误处理和用户体验优化
+    window.addEventListener('error', function(event) {
+      console.error('全局错误:', event.error);
+    });
+
+    // 防止表单默认提交
+    document.addEventListener('DOMContentLoaded', function() {
+      const forms = document.querySelectorAll('form');
+      forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
