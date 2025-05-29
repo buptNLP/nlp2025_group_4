@@ -5,8 +5,6 @@
 
 可以直接通过链接访问：https://buptnlp.github.io/nlp2025_group_4/
 
-可用deepseel API： sk-6b732d64cf7f440491f187fa82e89a2d
-
 
 ![](assets/app_ui.PNG)
 
