@@ -121,8 +121,7 @@ API Provider: GLM
 API Key: your-glm-api-key
 ```
 
-![](assets/rag_configuration_AI.png)
-
+<img src="assets/rag_configuration_AI.png" alt="" width="50%">
 
 
 ### 检索参数
@@ -131,7 +130,7 @@ API Key: your-glm-api-key
 - **返回数量**: 1-20个结果
 - **重排序**: 可选启用BGE重排序模型
 
-![](assets/rag_configuration_retrieve.png)
+<img src="assets/rag_configuration_retrieve.png" alt="" width="50%">
 
 
 ## 💡 使用示例
