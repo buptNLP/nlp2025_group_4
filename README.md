@@ -188,6 +188,17 @@ response = client.direct_search(
 ```
 
 
+## 📚 数据来源
+
+本系统的古文数据来源于 [NiuTrans/Classical-Modern](https://github.com/NiuTrans/Classical-Modern/tree/main) 项目，这是一个非常全面的文言文（古文）- 现代文平行语料库，基本涵盖了大部分经典古籍著作。
+
+### 数据规模
+
+- **总句数**: 972,467 句
+- **对齐方式**: 句子级别对齐的双语（平行）数据
+- **处理方法**: 采用归一化编辑距离算法与长度比指标进行对齐
+
+
 
 ## ⚠️ 注意事项
 
