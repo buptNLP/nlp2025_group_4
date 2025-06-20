@@ -129,6 +129,7 @@ API Key: your-glm-api-key
 
 ![](assets/rag_configuration.png)
 
+
 ## 💡 使用示例
 
 ### 基础查询
@@ -145,6 +146,17 @@ API Key: your-glm-api-key
 指定篇章: "学而"
 问题: "学习的方法"
 ```
+
+### 智能检索
+- 配置大模型API
+- 勾选 智能查询优化
+
+
+### 多轮检索
+- 配置大模型API
+- 勾选 启用多轮检索
+
+
 
 ### API调用示例
 
