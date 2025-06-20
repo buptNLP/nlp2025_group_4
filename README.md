@@ -121,13 +121,17 @@ API Provider: GLM
 API Key: your-glm-api-key
 ```
 
+![](assets/rag_configuration_AI.png)
+
+
+
 ### 检索参数
 
 - **检索模式**: 混合检索（推荐）/ 向量检索 / 关键词检索
 - **返回数量**: 1-20个结果
 - **重排序**: 可选启用BGE重排序模型
 
-![](assets/rag_configuration.png)
+![](assets/rag_configuration_retrieve.png)
 
 
 ## 💡 使用示例
@@ -150,11 +154,15 @@ API Key: your-glm-api-key
 ### 智能检索
 - 配置大模型API
 - 勾选 智能查询优化
+  
+![](assets/rag_example1.png)
 
 
 ### 多轮检索
 - 配置大模型API
 - 勾选 启用多轮检索
+
+![](assets/rag_example1.png)
 
 
 
