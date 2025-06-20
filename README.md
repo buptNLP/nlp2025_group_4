@@ -162,11 +162,11 @@ API Key: your-glm-api-key
 - 配置大模型API
 - 勾选 启用多轮检索
 
-![](assets/rag_example1.png)
+![](assets/rag_example2.png)
 
 
 
-### API调用示例
+### 后端API调用示例
 
 ```python
 from rag_client import RAGClient
